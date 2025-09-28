@@ -1,0 +1,27 @@
+@apiURL = http://localhost:8080/notes
+# JWT John Doe:
+#@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTUxNjIzOTAyMn0.ByTWqusGaa5rZDNjlYcV2BO--6q6oebGXF84fPlFSEc
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiam9obi5kb2VAYXJjYWRhLmZpIiwibmFtZSI6bnVsbCwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTg1MjkxMzgsImV4cCI6MTc2MTEyMTEzOH0.jqwEdrDwYCBivt_UUUWu8MLDG_UAtWPUx68V0Zh7m4E
+
+### 
+
+GET {{apiURL}}
+Authorization: Bearer {{token}}
+
+###
+POST {{apiURL}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "author_id": 2, "text": "testing POST" }
+
+###
+PUT {{apiURL}}/1
+Content-Type: application/json
+
+{ "text": "updated!"}
+
+###
+DELETE {{apiURL}}/1
+
