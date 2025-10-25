@@ -19,34 +19,31 @@ model Note {
 }
 
 model User {
-  id               Int            @id @default(autoincrement())
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @default(now())
-  email            String         @unique
-  role             String         @default("user")
-  name             String?
-  password         String?
-  refreshTokens    RefreshToken[] // Relation till refresh tokens
+  id        Int             @id @default(autoincrement())
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @default(now())
+  email     String           @unique
+  role      String           @default("user")
+  name      String?
+  password  String?
 
-  @@map("users") // Explicit mappning rekommenderas
+  refreshTokens RefreshToken[]
 }
+
+model RefreshToken {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  token      String   @unique
+  issued_at  DateTime @default(now())
+  expires_at DateTime
+
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
 
 model Test {
   id    Int    @id @default(autoincrement())
   name  String
-}
-
-// Ny tabell för Refresh Tokens
-model RefreshToken {
-  id           Int       @id @default(autoincrement())
-  userId       Int       // Foreign Key till User
-  token        String    @unique // Refresh token-strängen
-  issued_at    DateTime  @default(now())
-  expires_at   DateTime
-
-  // Relation till User-modellen
-  user         User      @relation(fields: [userId], references: [id])
-
-  @@unique([userId, token]) // Säkerställer att en användare inte kan ha samma token flera gånger (även om 'token' är unique)
-  @@map("refresh_tokens")
 }
