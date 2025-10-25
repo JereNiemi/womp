@@ -19,14 +19,29 @@ model Note {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  email     String   @unique
-  role      String   @default("user")
+  id        Int             @id @default(autoincrement())
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @default(now())
+  email     String           @unique
+  role      String           @default("user")
   name      String?
   password  String?
+
+  refreshTokens RefreshToken[]
 }
+
+model RefreshToken {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  token      String   @unique
+  issued_at  DateTime @default(now())
+  expires_at DateTime
+
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
 
 model Test {
   id    Int    @id @default(autoincrement())
