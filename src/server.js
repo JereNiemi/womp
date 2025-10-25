@@ -1,31 +1,34 @@
-const express = require('express')
-const cors = require('cors')
+const express = require('express');
+const cors = require('cors');
 
-// CORRECTED: Import authorize from the src/middleware directory
-const authorize = require('./middleware/authorize') 
+// Middleware för autentisering (om du använder det någonstans)
+const authorize = require('./middleware/authorize');
 
-require('dotenv').config()
+require('dotenv').config();
 
-const app = express()
-app.use(cors({ origin: '*' })) // Recommended: Use explicit CORS configuration
+const app = express();
 
-const PORT = process.env.PORT || 8080
+// --- CORS ---
+// Tillåt alla origin (bra för test). I produktion, ange domän istället för '*'.
+app.use(cors({ origin: '*' }));
 
-console.log(`Node.js ${process.version}`)
+// --- JSON body parsing ---
+app.use(express.json());
 
-app.use(express.json())
-
+// --- Test-route för att verifiera att API:n körs ---
 app.get('/', (req, res) => {
-    res.json({ msg: "API is running and secure" }) // Updated message
-})
+    res.json({ msg: "API is running and secure" });
+});
 
+// --- Users routes ---
+const usersRouter = require('./routes/users');
+app.use('/users', usersRouter);
 
+// --- Port ---
+const PORT = process.env.PORT || 8080;
+console.log(`Node.js ${process.version}`);
 
-const usersRouter = require('./routes/users')
-app.use('/users', usersRouter)
-
-
+// --- Starta servern ---
 app.listen(PORT, () => {
-    // Simplified the server listener block, as try/catch is generally unnecessary here
-    console.log(`Running on http://localhost:${PORT}`)
-})
+    console.log(`Server running on http://localhost:${PORT}`);
+});
