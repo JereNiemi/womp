@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
     //  Skapa Access Token
     const accessToken = createAccessToken(user)
 
-    //  Skapa Refresh Token
+    // 2. Skapa Refresh Token
     const refreshTokenString = generateRefreshToken()
     const expiresAt = new Date()
     expiresAt.setDate(expiresAt.getDate() + REFRESH_TOKEN_EXPIRY_DAYS) // Utgångsdatum om 30 dagar
